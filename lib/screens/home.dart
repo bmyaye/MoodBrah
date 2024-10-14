@@ -3,7 +3,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
 import 'add_mood.dart';
-import 'edit_mood.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title, this.selectedMood})
@@ -21,14 +20,31 @@ class _HomePageState extends State<HomePage> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
-  final Map<DateTime, String> _moodMap = {};
+  String? displayedMood;
+
+  final Map<DateTime, String> _moodMap = {
+    // DateTime(2024, 10, 1): 'Good',
+    // DateTime(2024, 10, 2): 'Great',
+    // DateTime(2024, 10, 3): 'OK',
+    // DateTime(2024, 10, 4): 'Not Good',
+    // DateTime(2024, 10, 5): 'Good',
+    // DateTime(2024, 10, 6): 'OK',
+    // DateTime(2024, 10, 7): 'OK',
+    // DateTime(2024, 10, 8): 'Not Good',
+    // DateTime(2024, 10, 9): 'Good',
+    // DateTime(2024, 10, 10): 'Good',
+    // DateTime(2024, 10, 11): 'Bad',
+    // DateTime(2024, 10, 12): 'Great',
+    // DateTime(2024, 10, 13): 'OK',
+    // DateTime(2024, 10, 14): 'Not Good',
+  };
 
   @override
   void initState() {
     super.initState();
     if (widget.selectedMood != null) {
       setState(() {
-        _moodMap[_selectedDay] = widget.selectedMood!;
+        displayedMood = widget.selectedMood;
       });
     }
   }
@@ -121,6 +137,7 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
+                        fontFamily: 'Itim',
                       ),
                     ),
                   ),
@@ -160,22 +177,24 @@ class _HomePageState extends State<HomePage> {
                           },
                           onDaySelected: (selectedDay, focusedDay) {
                             setState(() {
-                              _selectedDay =
-                                  selectedDay; // Make sure to set the selected day
+                              _selectedDay = selectedDay;
                               _focusedDay = focusedDay;
                             });
-                            // Navigate to the AddMoodPage when a day is selected
+
+                            // Navigate to AddMoodPage and wait for a mood selection
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const EditMoodPage(title: ''),
+                                builder: (context) => AddMoodPage(
+                                    title: '', selectedDate: selectedDay),
                               ),
                             ).then((selectedMood) {
                               if (selectedMood != null) {
                                 setState(() {
                                   _moodMap[selectedDay] =
-                                      selectedMood; // Update mood map on mood selection
+                                      selectedMood; // Update mood map
+                                  print(
+                                      "Updated mood for $selectedDay: $selectedMood"); // Debugging line
                                 });
                               }
                             });
@@ -192,7 +211,55 @@ class _HomePageState extends State<HomePage> {
                           },
                           calendarBuilders: CalendarBuilders(
                             defaultBuilder: (context, day, focusedDay) {
+                              String mood = _moodMap[day] ??
+                                  ''; // Get mood for the current day
+                              String moodImage = getMoodImage(mood);
+
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: mood.isNotEmpty
+                                            ? getMoodColor(mood)
+                                            : Colors.grey[300],
+                                      ),
+                                      height: 40,
+                                      width: 40,
+                                      child: moodImage.isNotEmpty
+                                          ? Image.asset(moodImage,
+                                              fit: BoxFit.contain,
+                                              width: 30,
+                                              height: 30)
+                                          : Container(),
+                                    ),
+                                    const SizedBox(height: 3),
+                                    Text(DateFormat('d').format(day),
+                                        style: const TextStyle(
+                                            fontSize: 14, color: Colors.black)),
+                                  ],
+                                ),
+                              );
+                            },
+                            todayBuilder: (context, day, focusedDay) {
                               String mood = _moodMap[day] ?? '';
+                              String moodImage = '';
+
+                              // Set moodImage based on mood
+                              if (mood == 'Great') {
+                                moodImage = 'assets/images/Great.png';
+                              } else if (mood == 'Good') {
+                                moodImage = 'assets/images/Good.png';
+                              } else if (mood == 'OK') {
+                                moodImage = 'assets/images/OK.png';
+                              } else if (mood == 'Not Good') {
+                                moodImage = 'assets/images/NotGood.png';
+                              } else if (mood == 'Bad') {
+                                moodImage = 'assets/images/Bad.png';
+                              }
+
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -207,43 +274,14 @@ class _HomePageState extends State<HomePage> {
                                       height: 40,
                                       width: 40,
                                       child: Center(
-                                        child: Text(
-                                          mood,
-                                          style: const TextStyle(fontSize: 25),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      DateFormat('d').format(day),
-                                      style: const TextStyle(
-                                          fontSize: 14, color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            todayBuilder: (context, day, focusedDay) {
-                              String mood = _moodMap[day] ?? '';
-
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.blue,
-                                      ),
-                                      height: 40,
-                                      width: 40,
-                                      child: Center(
-                                        child: Text(
-                                          mood,
-                                          style: const TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white),
-                                        ),
+                                        child: moodImage.isNotEmpty
+                                            ? Image.asset(
+                                                moodImage,
+                                                fit: BoxFit.contain,
+                                                width: 30,
+                                                height: 30,
+                                              )
+                                            : Container(), // Empty container if no mood image is set
                                       ),
                                     ),
                                     const SizedBox(height: 3),
@@ -257,21 +295,48 @@ class _HomePageState extends State<HomePage> {
                               );
                             },
                             selectedBuilder: (context, day, focusedDay) {
+                              String mood = _moodMap[day] ?? '';
+                              String moodImage = '';
+
+                              // Set moodImage based on mood
+                              if (mood == 'Great') {
+                                moodImage = 'assets/images/Great.png';
+                              } else if (mood == 'Good') {
+                                moodImage = 'assets/images/Good.png';
+                              } else if (mood == 'OK') {
+                                moodImage = 'assets/images/OK.png';
+                              } else if (mood == 'Not Good') {
+                                moodImage = 'assets/images/NotGood.png';
+                              } else if (mood == 'Bad') {
+                                moodImage = 'assets/images/Bad.png';
+                              }
+
                               return Center(
                                 child: Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
+                                    color: mood.isNotEmpty
+                                        ? getMoodColor(mood)
+                                        : Colors.grey[300],
                                     border:
                                         Border.all(color: Colors.red, width: 3),
                                   ),
                                   height: 50,
                                   width: 50,
                                   child: Center(
-                                    child: Text(
-                                      _moodMap[day] ??
-                                          DateFormat('d').format(day),
-                                      style: const TextStyle(fontSize: 25),
-                                    ),
+                                    child: moodImage.isNotEmpty
+                                        ? Image.asset(
+                                            moodImage,
+                                            fit: BoxFit.contain,
+                                            width: 40,
+                                            height: 40,
+                                          )
+                                        : Text(
+                                            mood,
+                                            style: const TextStyle(
+                                                fontSize: 25,
+                                                color: Colors.green),
+                                          ),
                                   ),
                                 ),
                               );
@@ -323,6 +388,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
                           height: 0,
+                          // fontFamily: 'Itim',
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -540,23 +606,6 @@ class _HomePageState extends State<HomePage> {
           child: GestureDetector(
             onTap: () async {
               // Navigate to AddMoodPage and wait for the selected mood result
-              final selectedMood = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddMoodPage(
-                    title: '',
-                  ),
-                ),
-              );
-
-              // After the user selects a mood, update the mood for the selected day
-              if (selectedMood != null && _selectedDay != null) {
-                // Check if _selectedDay is not null
-                setState(() {
-                  _moodMap[_selectedDay!] =
-                      selectedMood; // Use ! to assert that _selectedDay is not null
-                });
-              }
             },
             child: Container(
               width: 100,
@@ -661,6 +710,23 @@ class _HomePageState extends State<HomePage> {
         return const Color(0xFFF54336);
       default:
         return Colors.grey;
+    }
+  }
+
+  String getMoodImage(String mood) {
+    switch (mood) {
+      case 'Great':
+        return 'assets/images/Great.png';
+      case 'Good':
+        return 'assets/images/Good.png';
+      case 'OK':
+        return 'assets/images/OK.png';
+      case 'Not Good':
+        return 'assets/images/NotGood.png';
+      case 'Bad':
+        return 'assets/images/Bad.png';
+      default:
+        return ''; // Return empty if mood doesn't match
     }
   }
 }

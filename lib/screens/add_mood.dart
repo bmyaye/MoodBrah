@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 import 'about_mood.dart';
 
 class AddMoodPage extends StatefulWidget {
-  const AddMoodPage({super.key, required this.title});
+  const AddMoodPage({
+    Key? key,
+    required this.title,
+    this.moodEmoji = '',
+    required this.selectedDate,
+  }) : super(key: key);
 
   final String title;
+  final String moodEmoji;
+  final DateTime selectedDate;
 
   @override
   State<AddMoodPage> createState() => _AddMoodPageState();
@@ -205,8 +212,8 @@ class _AddMoodPageState extends State<AddMoodPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      TextButton(
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -217,20 +224,35 @@ class _AddMoodPageState extends State<AddMoodPage> {
                                 selectedMood: selectedMood,
                               ),
                             ),
-                          );
+                          ).then((returnedMood) {
+                            if (returnedMood != null) {
+                              Navigator.pop(context, returnedMood);
+                            }
+                          });
                         },
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
                         child: Column(
                           children: [
-                            Image.asset('assets/images/Great.png', width: 100, height: 100),
-                            const Text('Great',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold)),
+                            Image.asset('assets/images/Great.png',
+                                width: 100, height: 100),
+                            const Text(
+                              'Great',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {
+                      TextButton(
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -241,49 +263,79 @@ class _AddMoodPageState extends State<AddMoodPage> {
                                 selectedMood: selectedMood,
                               ),
                             ),
-                          );
+                          ).then((returnedMood) {
+                            if (returnedMood != null) {
+                              Navigator.pop(context, returnedMood);
+                            }
+                          });
                         },
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
                         child: Column(
                           children: [
-                            Image.asset('assets/images/Good.png', width: 100, height: 100),
-                            const Text('Good',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold)),
+                            Image.asset('assets/images/Good.png',
+                                width: 100, height: 100),
+                            const Text(
+                              'Good',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AboutMoodPage(
-                                title: '',
-                                mood: 'OK',
-                                moodEmoji: 'assets/images/OK.png',
-                                selectedMood: selectedMood,
-                              ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AboutMoodPage(
+                                    title: '',
+                                    mood: 'OK',
+                                    moodEmoji: 'assets/images/OK.png',
+                                    selectedMood: selectedMood,
+                                  ),
+                                ),
+                              ).then((returnedMood) {
+                                if (returnedMood != null) {
+                                  Navigator.pop(context, returnedMood);
+                                }
+                              });
+                            },
+                            style: ButtonStyle(
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              padding: MaterialStateProperty.all(EdgeInsets.zero),
                             ),
-                          );
-                        },
-                        child: Column(
-                          children: [
-                            Image.asset('assets/images/OK.png', width: 100, height: 100),
-                            const Text('OK',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
+                            child: Column(
+                              children: [
+                                Image.asset('assets/images/OK.png',
+                                    width: 100, height: 100),
+                                const Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                     ],
                   ),
                   const SizedBox(width: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      TextButton(
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -294,20 +346,35 @@ class _AddMoodPageState extends State<AddMoodPage> {
                                 selectedMood: selectedMood,
                               ),
                             ),
-                          );
+                          ).then((returnedMood) {
+                            if (returnedMood != null) {
+                              Navigator.pop(context, returnedMood);
+                            }
+                          });
                         },
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
                         child: Column(
                           children: [
-                            Image.asset('assets/images/NotGood.png', width: 100, height: 100),
-                            const Text('Not Good',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold)),
+                            Image.asset('assets/images/NotGood.png',
+                                width: 100, height: 100),
+                            const Text(
+                              'Not Good',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {
+                      TextButton(
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -318,14 +385,29 @@ class _AddMoodPageState extends State<AddMoodPage> {
                                 selectedMood: selectedMood,
                               ),
                             ),
-                          );
+                          ).then((returnedMood) {
+                            if (returnedMood != null) {
+                              Navigator.pop(context, returnedMood);
+                            }
+                          });
                         },
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                        ),
                         child: Column(
                           children: [
-                            Image.asset('assets/images/Bad.png', width: 100, height: 100),
-                            const Text('Bad',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold)),
+                            Image.asset('assets/images/Bad.png',
+                                width: 100, height: 100),
+                            const Text(
+                              'Bad',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
                         ),
                       ),
