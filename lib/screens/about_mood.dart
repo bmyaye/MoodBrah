@@ -180,6 +180,7 @@ class _AboutMoodPageState extends State<AboutMoodPage> {
                       style: const TextStyle(
                         fontSize: 70,
                         color: Color(0xFF000000),
+                        fontFamily: 'Itim',
                       )),
                   Column(
                     children: [
@@ -229,7 +230,7 @@ class _AboutMoodPageState extends State<AboutMoodPage> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 25,
-                        // fontFamily: 'Inter',
+                        fontFamily: 'Itim',
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
@@ -276,6 +277,7 @@ class _AboutMoodPageState extends State<AboutMoodPage> {
                       color: Colors.black,
                       fontSize: 25,
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'Itim',
                     ),
                   ),
                 ),

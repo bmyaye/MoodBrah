@@ -165,11 +165,13 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
+                              fontFamily: 'Itim',
                             ),
                             weekendStyle: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
+                              fontFamily: 'Itim',
                             ),
                           ),
                           selectedDayPredicate: (day) {
@@ -238,7 +240,10 @@ class _HomePageState extends State<HomePage> {
                                     const SizedBox(height: 3),
                                     Text(DateFormat('d').format(day),
                                         style: const TextStyle(
-                                            fontSize: 14, color: Colors.black)),
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontFamily: 'Itim',
+                                        )),
                                   ],
                                 ),
                               );
@@ -288,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       DateFormat('d').format(day),
                                       style: const TextStyle(
-                                          fontSize: 14, color: Colors.black),
+                                          fontSize: 14, color: Colors.black, fontFamily: 'Itim'),
                                     ),
                                   ],
                                 ),
@@ -319,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                                         ? getMoodColor(mood)
                                         : Colors.grey[300],
                                     border:
-                                        Border.all(color: Colors.red, width: 3),
+                                        Border.all(color: Colors.white, width: 3),
                                   ),
                                   height: 50,
                                   width: 50,
@@ -335,7 +340,8 @@ class _HomePageState extends State<HomePage> {
                                             mood,
                                             style: const TextStyle(
                                                 fontSize: 25,
-                                                color: Colors.green),
+                                                color: Colors.black,
+                                                fontFamily: 'Itim'),
                                           ),
                                   ),
                                 ),
@@ -388,7 +394,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
                           height: 0,
-                          // fontFamily: 'Itim',
+                          fontFamily: 'Itim',
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -399,6 +405,7 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           height: 0,
+                          fontFamily: 'Itim',
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -457,7 +464,7 @@ class _HomePageState extends State<HomePage> {
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
-                                              fontFamily: 'Inter',
+                                              fontFamily: 'Itim',
                                               fontWeight: FontWeight.w700,
                                               height: 0,
                                             ),
@@ -470,6 +477,7 @@ class _HomePageState extends State<HomePage> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
                                               height: 0,
+                                              fontFamily: 'Itim',
                                             ),
                                           ),
                                         ],
@@ -505,6 +513,7 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
                                         height: 0,
+                                        fontFamily: 'Itim',
                                       ),
                                     ),
                                   ],
@@ -537,6 +546,7 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
                                         height: 0,
+                                        fontFamily: 'Itim',
                                       ),
                                     ),
                                   ],
