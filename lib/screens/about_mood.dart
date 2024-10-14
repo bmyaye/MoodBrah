@@ -1,17 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:mood_tracker_frontend/screens/home.dart';
+
+// import 'home.dart';
 
 class AboutMoodPage extends StatefulWidget {
-  const AboutMoodPage({super.key, required this.title});
+  const AboutMoodPage({
+    Key? key,
+    required this.title,
+    required this.mood,
+    required this.moodEmoji,
+    required this.selectedMood,// Make sure to accept the mood emoji
+  }) : super(key: key);
 
   final String title;
+  final String mood;
+  final String moodEmoji;
+  final String? selectedMood;
 
   @override
   State<AboutMoodPage> createState() => _AboutMoodPageState();
 }
 
 class _AboutMoodPageState extends State<AboutMoodPage> {
+  String? selectedMood;
+  
+  void _onMoodSelected(String mood) {
+    setState(() {
+      selectedMood = mood; // Update selected mood when a mood is selected
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<String> mood = ['Great', 'Good', 'OK', 'Not Good', 'Bad'];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -127,9 +149,6 @@ class _AboutMoodPageState extends State<AboutMoodPage> {
             left: 0,
             right: 0,
             child: GestureDetector(
-              onTap: () {
-                print("onClick add button");
-              },
               child: Container(
                 width: 100,
                 height: 100,
@@ -142,15 +161,149 @@ class _AboutMoodPageState extends State<AboutMoodPage> {
                       blurRadius: 4,
                       offset: Offset(0, 4),
                       spreadRadius: 0,
-                    )
+                    ),
                   ],
                 ),
-                child: const Center(
-                  child: Icon(
-                    Icons.add,
-                    size: 70,
-                    color: Color(0xFFFFD6A5),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        widget.moodEmoji,
+                        width: 100,
+                        height: 100,
+                      ),
+                    ],
                   ),
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 50,
+            child: Center(
+              child: Column(
+                children: [
+                  // Image.asset(
+                  //   widget.moodEmoji,
+                  //   width: 100,
+                  //   height: 100,
+                  // ),
+                  Text(widget.mood,
+                      style: const TextStyle(
+                        fontSize: 70,
+                        color: Color(0xFF000000),
+                      )),
+                  Column(
+                    children: [
+                      const SizedBox(height: 15),
+                      Container(
+                        width: 320,
+                        height: 320,
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFFDFFB6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 520,
+            left: 50,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: 120,
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                decoration: ShapeDecoration(
+                  color: const Color(0xFFFFADAD),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Back',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        // fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: 520,
+            right: 50,
+            child: GestureDetector(
+              // onTap: () {
+              //   Navigator.pop(context,
+              //     MaterialPageRoute(
+              //       builder: (context) => const HomePage(
+              //         title: 'Mood',
+              //         // mood: widget.mood,
+              //       ),
+              //     )); // Pass the selected mood back to HomePage
+              // },
+              onTap: () {
+                // Pass the selected mood back to HomePage
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(
+                      title: '',
+                      selectedMood: widget.selectedMood,
+                    ),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+
+              child: Container(
+                width: 120,
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                decoration: ShapeDecoration(
+                  color: const Color(0xFFFFD6A5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Done',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

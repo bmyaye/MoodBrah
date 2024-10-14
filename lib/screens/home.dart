@@ -6,9 +6,11 @@ import 'add_mood.dart';
 import 'edit_mood.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+  const HomePage({Key? key, required this.title, this.selectedMood})
+      : super(key: key);
 
   final String title;
+  final String? selectedMood;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,9 +19,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime _selectedDay = DateTime.now();
 
   final Map<DateTime, String> _moodMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.selectedMood != null) {
+      setState(() {
+        _moodMap[_selectedDay] = widget.selectedMood!;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,20 +160,22 @@ class _HomePageState extends State<HomePage> {
                           },
                           onDaySelected: (selectedDay, focusedDay) {
                             setState(() {
-                              _selectedDay = selectedDay;
+                              _selectedDay =
+                                  selectedDay; // Make sure to set the selected day
                               _focusedDay = focusedDay;
                             });
                             // Navigate to the AddMoodPage when a day is selected
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const EditMoodPage(
-                                        title: '',
-                                      )),
+                                builder: (context) =>
+                                    const EditMoodPage(title: ''),
+                              ),
                             ).then((selectedMood) {
                               if (selectedMood != null) {
                                 setState(() {
-                                  _moodMap[selectedDay] = selectedMood;
+                                  _moodMap[selectedDay] =
+                                      selectedMood; // Update mood map on mood selection
                                 });
                               }
                             });
@@ -179,7 +193,6 @@ class _HomePageState extends State<HomePage> {
                           calendarBuilders: CalendarBuilders(
                             defaultBuilder: (context, day, focusedDay) {
                               String mood = _moodMap[day] ?? '';
-
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -187,8 +200,8 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: _moodMap[day] != null
-                                            ? getMoodColor(_moodMap[day]!)
+                                        color: mood.isNotEmpty
+                                            ? getMoodColor(mood)
                                             : Colors.grey[300],
                                       ),
                                       height: 40,
@@ -520,46 +533,6 @@ class _HomePageState extends State<HomePage> {
         ),
 
         // Add button
-        // Positioned(
-        //   bottom: 50,
-        //   left: 0,
-        //   right: 0,
-        //   child: GestureDetector(
-        //     onTap: () {
-        //       // Navigate to AddMoodPage when add button is clicked
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //             builder: (context) => const AddMoodPage(
-        //                   title: '',
-        //                 )),
-        //       );
-        //     },
-        //     child: Container(
-        //       width: 100,
-        //       height: 100,
-        //       decoration: const BoxDecoration(
-        //         shape: BoxShape.circle,
-        //         color: Color(0xFFFDFFB6),
-        //         boxShadow: [
-        //           BoxShadow(
-        //             color: Color(0x3F000000),
-        //             blurRadius: 4,
-        //             offset: Offset(0, 4),
-        //             spreadRadius: 0,
-        //           )
-        //         ],
-        //       ),
-        //       child: const Center(
-        //         child: Icon(
-        //           Icons.add,
-        //           size: 70,
-        //           color: Color(0xFFFFD6A5),
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
         Positioned(
           bottom: 50,
           left: 0,
@@ -570,7 +543,9 @@ class _HomePageState extends State<HomePage> {
               final selectedMood = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddMoodPage(title: ''),
+                  builder: (context) => const AddMoodPage(
+                    title: '',
+                  ),
                 ),
               );
 
@@ -651,7 +626,7 @@ class _HomePageState extends State<HomePage> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  _moodMap[selectedDay] = '🙁'; // Bad
+                  _moodMap[selectedDay] = '🙁'; // Not Good
                 });
                 Navigator.pop(context);
               },
@@ -660,7 +635,7 @@ class _HomePageState extends State<HomePage> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  _moodMap[selectedDay] = '😡'; // Sucks
+                  _moodMap[selectedDay] = '😡'; // Bad
                 });
                 Navigator.pop(context);
               },
@@ -674,15 +649,15 @@ class _HomePageState extends State<HomePage> {
 
   Color getMoodColor(String mood) {
     switch (mood) {
-      case '😁':
+      case 'Great':
         return const Color(0xFF4AAF57);
-      case '😊':
+      case 'Good':
         return const Color(0xFF8BC255);
-      case '😐':
+      case 'OK':
         return const Color(0xFFFFC02D);
-      case '🙁':
+      case 'Not Good':
         return const Color(0xFFFF981F);
-      case '😡':
+      case 'Bad':
         return const Color(0xFFF54336);
       default:
         return Colors.grey;
